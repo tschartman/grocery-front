@@ -1,0 +1,42 @@
+[
+    {
+        "name": "almonds",
+        "brand": "blue diamond",
+        "type": "restaurant",
+        "price": 12.10,
+        "quantity": 2,
+        "weight": 12,
+        "vid": 1,
+        "id": 1
+    },
+    {
+        "name": "soda",
+        "brand": "pepsi",
+        "type": "local_drink",
+        "price": 2.99,
+        "quantity": 1,
+        "weight": 20,
+        "vid": 1,
+        "id": 2
+    },
+    {
+        "name": "chicken",
+        "brand": "great value",
+        "type": "restaurant",
+        "price": 11.23,
+        "quantity": 1,
+        "weight": 16,
+        "vid": 1,
+        "id": 3
+    },
+    {
+        "name": "spinach",
+        "brand": "market pantry",
+        "type": "restaurant",
+        "price": 2.10,
+        "quantity": 1,
+        "weight": 4,
+        "vid": 1,
+        "id": 4
+    }
+]
