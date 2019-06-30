@@ -4,7 +4,9 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
+    <v-app>
     <router-view/>
+    </v-app>
   </div>
 </template>
 
@@ -15,7 +17,7 @@ import HelloWorld from './components/HelloWorld'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
   },
   data () {
     return {

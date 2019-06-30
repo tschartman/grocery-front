@@ -4,6 +4,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+import moment from 'moment'
+
 
 Vue.config.productionTip = false
 
@@ -25,6 +27,12 @@ Vue.filter('toCurrency', function (value) {
       minimumFractionDigits: 0
   });
   return formatter.format(value);
+});
+
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('MMMM, DD, YYYY')
+  }
 });
 
 new Vue({

@@ -1,11 +1,9 @@
 <template>
- <v-layout row>
-    <v-flex xs12 sm6 offset-sm3>
       <v-card>
         <v-toolbar color="teal" dark>
           <v-toolbar-side-icon></v-toolbar-side-icon>
 
-          <v-toolbar-title>Items</v-toolbar-title>
+          <v-toolbar-title> {{ visit.store }} | {{ visit.date | formatDate }}</v-toolbar-title>
 
           <v-spacer></v-spacer>
 
@@ -16,6 +14,7 @@
 
         <v-expansion-panel
         v-model="panel"
+        popout
         expand
         >
           <v-expansion-panel-content
@@ -26,40 +25,37 @@
               <div>{{ item.brand }} {{ item.name }} - {{ item.weight }} Oz</div>
             </template>
 
-            <v-card>
+            <v-card class="grey lighten-3">
               <v-card-text>x{{ item.quantity }} at {{ item.price | toCurrency }} each -  {{ (item.price * item.quantity) | toCurrency }}</v-card-text>
               <v-card-text>({{ item.price / item.weight | toCurrency }} per Oz)</v-card-text>    
             </v-card>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-card>
-    </v-flex>
- </v-layout>
 </template>
 <script>
 
 export default {
+  name: 'VisitDetail',
+  props: ['visit'],
     data() {
         return {
-            items: [],
             panel: [],
-            id: 0
+            items: []
         }
     },
 
 methods: { 
 
     },
-
-
     mounted() {
-        this.id = parseInt(this.$route.params.visitId)
-        
-        this.$api
+      this.$api
             .get('detail.json')
-            .then((result) => {this.items = result.data})
+            .then((result) => {
+              this.items = result.data  
+              })
         },
-}
+    }
 
 
 </script>

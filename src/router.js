@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import VisitDetail from './components/VisitDetail'
 
 Vue.use(Router)
 
@@ -13,9 +12,10 @@ export default new Router({
       component: Home
     },
     {
-      path: '/visit/:visitId',
-      name: 'visit',
-      component: VisitDetail,
+      path: '/compareVisits/',
+      name: 'compareVisits',
+      component: () => import(/* webpackChunkName: "about" */ './components/CompareVisits'),
+      props: true
     },
     {
       path: '/about',
