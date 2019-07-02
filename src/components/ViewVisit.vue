@@ -1,10 +1,7 @@
 <template>
 <v-layout row>
-  <v-flex pl-3 pr-3 xs6>
-    <VisitDetail :align="'column'" :visit="visits[0]"></VisitDetail>
-   </v-flex>
-   <v-flex pl-3 pr-3 xs6>
-    <VisitDetail :align="'column'" :visit="visits[1]"></VisitDetail>
+  <v-flex pl-5 pr-5 xs12>
+    <VisitDetail :align="'row'" :visit="visits[0]"></VisitDetail>
    </v-flex>
  </v-layout>
 </template>
@@ -18,7 +15,7 @@ import { mapState } from 'vuex'
 Vue.component('VisitDetail', VisitDetail);
 
 export default {
-    name: 'CompareVisits',
+    name: 'ViewVisit',
     computed: {
         ...mapState([
         'visits'
@@ -31,13 +28,6 @@ export default {
         return {
         }
     },
+
 }
 </script>
-
-<style>
-
-.mat-expanded {
-  background: grey;
-}
-
-</style>

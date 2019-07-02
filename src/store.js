@@ -11,7 +11,10 @@ export default new Vuex.Store({
   mutations: {
     COMPARE_VISITS: (state, visits) => {
       state.visits = visits
-    }
+    },
+    SHOW_VISIT: (state, visit) => {
+      state.visits = visit
+    },
   },
   actions: {
 

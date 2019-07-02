@@ -15,7 +15,11 @@ export default new Router({
       path: '/compareVisits/',
       name: 'compareVisits',
       component: () => import(/* webpackChunkName: "about" */ './components/CompareVisits'),
-      props: true
+    },
+    {
+      path: '/viewVisit/',
+      name: 'viewVisit',
+      component: () => import(/* webpackChunkName: "about" */ './components/ViewVisit'),
     },
     {
       path: '/about',

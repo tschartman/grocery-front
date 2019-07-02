@@ -2,17 +2,23 @@
   <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
-        <v-toolbar color="cyan" dark>
+        <v-toolbar color="primary" dark>
           <v-toolbar-side-icon></v-toolbar-side-icon>
 
           <v-toolbar-title>Visits</v-toolbar-title>
-
+            <v-divider
+            class="mx-3"
+            inset
+            vertical
+          ></v-divider>
           <v-spacer></v-spacer>
           <v-toolbar-items>
+          <v-divider vertical></v-divider>
             <v-btn
             flat
             @click="compareView = !compareView"
             >Compare Visits</v-btn>
+          <v-divider vertical></v-divider>
           </v-toolbar-items>
           <v-btn icon>
             <v-icon>search</v-icon>
@@ -25,7 +31,7 @@
               v-for="visit in visits"
               :key="visit.id"
               avatar
-             @click.capture.stop="toggle(visit)"
+             @click.capture.stop="tileClick(visit)"
             >
              <v-list-tile-action v-if="compareView">
               <v-checkbox @click.prevent=""  v-model="selected" :value="visit"></v-checkbox>
@@ -66,9 +72,14 @@ export default {
     },
 
 methods: { 
-    showVisitDetail: function(id) {
-        this.$router.push({ name: 'visit', params: { visitId: id.toString() } })
+    tileClick(visit) {
+      if (!this.compareView){
+        this.showVisit(visit)
+      } else {
+        this.toggle(visit)
+      }
     },
+
     toggle(visit) {
       if (this.selected.includes(visit)) {
         this.selected.splice(this.selected.indexOf(visit),1);
@@ -77,11 +88,18 @@ methods: {
       }
     },
     ...mapMutations([
-      'COMPARE_VISITS'
+      'COMPARE_VISITS',
+      'SHOW_VISIT',
     ]),
     compareVisits: function() {
       this.COMPARE_VISITS(this.selected)
       this.$router.push({path:'compareVisits'})
+    },
+    showVisit(visit) {
+      var tempArr = []
+      tempArr.push(visit)
+      this.SHOW_VISIT(tempArr)
+      this.$router.push({path:'viewVisit'})
     }
 },
 
