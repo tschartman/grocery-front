@@ -22,6 +22,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './components/ViewVisit'),
     },
     {
+      path: '/itemsView/',
+      name: 'itemsView',
+      component: () => import(/* webpackChunkName: "about" */ './components/ItemsView'),
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
