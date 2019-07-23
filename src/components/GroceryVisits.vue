@@ -20,8 +20,8 @@
             >Compare Visits</v-btn>
           <v-divider vertical></v-divider>
           </v-toolbar-items>
-          <v-btn icon>
-            <v-icon>search</v-icon>
+          <v-btn to="/addVisit" icon>
+            <v-icon>add</v-icon>
           </v-btn>
         </v-toolbar>
 

@@ -14,17 +14,22 @@ export default new Router({
     {
       path: '/compareVisits/',
       name: 'compareVisits',
-      component: () => import(/* webpackChunkName: "about" */ './components/CompareVisits'),
+      component: () => import(/* webpackChunkName: "about" */ './components/CompareVisits.vue'),
     },
     {
       path: '/viewVisit/',
       name: 'viewVisit',
-      component: () => import(/* webpackChunkName: "about" */ './components/ViewVisit'),
+      component: () => import(/* webpackChunkName: "about" */ './components/ViewVisit.vue'),
+    },
+    {
+      path: '/addVisit/',
+      name: 'addVisit',
+      component: () => import(/* webpackChunkName: "about" */ './components/AddVisit.vue'),
     },
     {
       path: '/itemsView/',
       name: 'itemsView',
-      component: () => import(/* webpackChunkName: "about" */ './components/ItemsView'),
+      component: () => import(/* webpackChunkName: "about" */ './components/ItemsView.vue'),
     },
     {
       path: '/about',
