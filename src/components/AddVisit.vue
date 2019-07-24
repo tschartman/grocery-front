@@ -1,7 +1,6 @@
 <template>
   <v-form
     ref="form"
-    v-model="valid"
     lazy-validation
   >
   <div>
@@ -37,9 +36,9 @@
         >
           <template v-slot:activator="{ on }">
             <v-text-field
-              v-model="computedDateFormatted"
-              label="Date (read only text field)"
-              hint="MM/DD/YYYY format"
+              v-model="date"
+              label="Date"
+              hint="YYYY-MM-DD format"
               persistent-hint
               prepend-icon="event"
               readonly
@@ -69,48 +68,37 @@
 </template>
 <script>
   export default {
-    data: (vm) => ({
-      valid: true,
+    data: () => ({
       store: '', 
       address: '',
       amount: '',
       date: new Date().toISOString().substr(0, 10),
-      dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
       menu1: false,
       menu2: false
-    
     }),
-
-   computed: {
-      computedDateFormatted () {
-        return this.formatDate(this.date)
-      }
-    },
-
- watch: {
-      date (val) {
-        this.dateFormatted = this.formatDate(this.date)
-      }
-    },
 
     methods: {
       reset () {
         this.$refs.form.reset()
       },
 
-      formatDate (date) {
-            if (!date) return null
-
-            const [year, month, day] = date.split('-')
-            return `${month}/${day}/${year}`
-          },
-
-      parseDate (date) {
-        if (!date) return null
-
-        const [month, day, year] = date.split('/')
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-      }
+      submit () {
+       this.$api
+       .post("http://localhost:8000/visits/", 
+         {
+          date: this.date + 'T12:21:56Z',
+          store: this.store,
+          total: this.amount,
+          location: this.address,
+          }
+        )
+       .then((result) => {
+          console.log(result)
+        })
+        .catch(error => {
+          console.log(error.response)
+        });
+      },
     }
   }
 </script>
