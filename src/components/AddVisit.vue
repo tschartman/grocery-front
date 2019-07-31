@@ -4,15 +4,16 @@
     lazy-validation
   >
   <div>
+        <h1>Visit</h1>
     <v-layout row wrap>
-      <v-flex xs6 sm6>
+      <v-flex pl-5 pr-5 xs6 sm6>
         <v-text-field
           v-model="store"
           label="Store"
           required
         ></v-text-field>
       </v-flex>  
-      <v-flex xs6 sm6>
+      <v-flex pl-5 pr-5 xs6 sm6>
         <v-text-field
           label="Amount"
           v-model="amount"
@@ -22,7 +23,7 @@
       </v-flex>  
     </v-layout>
     <v-layout row wrap>
-      <v-flex xs6 sm6>
+      <v-flex pl-5 pr-5 xs6 sm6>
         <v-menu
           v-model="menu2"
           :close-on-content-click="false"
@@ -48,7 +49,7 @@
           <v-date-picker v-model="date" no-title @input="menu2 = false"></v-date-picker>
         </v-menu>
       </v-flex>  
-      <v-flex xs6 sm6>
+      <v-flex pl-5 pr-5 xs6 sm6>
           <v-text-field
           label="Address"
           v-model="address"
@@ -56,6 +57,9 @@
       </v-flex>
     </v-layout>
   </div>
+  <br>
+  <br>
+  <AddItems/>
     <v-btn
       color="error"
       @click="reset"
@@ -67,7 +71,16 @@
   </v-form>
 </template>
 <script>
+import Vue from 'vue'
+import AddItems from './AddItems.vue'
+
+Vue.component('AddItems', AddItems);
+
   export default {
+    name: 'AddVisit',
+    components: {
+      AddItems
+    },
     data: () => ({
       store: '', 
       address: '',
