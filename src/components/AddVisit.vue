@@ -5,15 +5,15 @@
   >
   <div>
         <h1>Visit</h1>
-    <v-layout row wrap>
-      <v-flex pl-5 pr-5 xs6 sm6>
+    <v-layout row wrap pl-5 pr-5>
+      <v-flex sm6 pl-3 pr-3>
         <v-text-field
           v-model="store"
           label="Store"
           required
         ></v-text-field>
       </v-flex>  
-      <v-flex pl-5 pr-5 xs6 sm6>
+      <v-flex sm6 pl-3 pr-3>
         <v-text-field
           label="Amount"
           v-model="amount"
@@ -22,8 +22,8 @@
         ></v-text-field>
       </v-flex>  
     </v-layout>
-    <v-layout row wrap>
-      <v-flex pl-5 pr-5 xs6 sm6>
+    <v-layout row wrap pl-5 pr-5>
+      <v-flex pl-3 pr-3 xs6 sm6>
         <v-menu
           v-model="menu2"
           :close-on-content-click="false"
@@ -49,7 +49,7 @@
           <v-date-picker v-model="date" no-title @input="menu2 = false"></v-date-picker>
         </v-menu>
       </v-flex>  
-      <v-flex pl-5 pr-5 xs6 sm6>
+      <v-flex pl-3 pr-3 sm6>
           <v-text-field
           label="Address"
           v-model="address"
@@ -60,14 +60,24 @@
   <br>
   <br>
   <AddItems/>
-    <v-btn
-      color="error"
-      @click="reset"
-    >
-     Reset Form
+  <v-layout row wrap pl-5 pr-5>
+    <v-flex sm6 pl-3 pr-3>
+      <v-btn
+        color="error"
+        @click="reset"
+      >
+      Cancel
     </v-btn>
- <v-btn color="success" @click="submit">submit</v-btn>
-
+    </v-flex>
+    <v-flex sm6 pl-3 pr-3>
+      <v-btn
+      color="success"
+      @click="submit"
+      >
+      submit
+      </v-btn>
+    </v-flex>
+  </v-layout>
   </v-form>
 </template>
 <script>

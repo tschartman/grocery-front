@@ -5,42 +5,44 @@
     lazy-validation
   >
         <h1>Items</h1>
-    <v-layout row wrap pl-3 pr-5>
-    <v-flex sm4 pr-3 pl-3>
-        <v-text-field
-          v-model="brand"
-          label="Brand"
-          required
-        ></v-text-field>
-    </v-flex>
-      <v-flex sm4 pr-3 pl-3>
-        <v-text-field
-          v-model="name"
-          label="Name"
-          required
-        ></v-text-field>
-      </v-flex>
-        <v-flex sm2 pr-3 pl-3>
+    <v-layout row wrap pl-5 pr-5>
+        <v-flex sm6 pr-3 pl-3>
             <v-text-field
-          v-model="price"
-          label="Price"
-          required
-        ></v-text-field>
+            v-model="brand"
+            label="Brand"
+            required
+            ></v-text-field>
         </v-flex>
-        <v-flex sm1 pr-3 >
+        <v-flex sm6 pr-3 pl-3>
             <v-text-field
-          v-model="quantity"
-          label="Quantity"
-          required
-        ></v-text-field>
+            v-model="name"
+            label="Name"
+            required
+            ></v-text-field>
         </v-flex>
-        <v-flex sm1>
+    </v-layout>
+    <v-layout row wrap pl-5 pr-5>
+        <v-flex sm4 pr-3 pl-3>
             <v-text-field
-          v-model="weight"
-          label="Weight"
-          required
-        ></v-text-field>
-      </v-flex>  
+            v-model="quantity"
+            label="Quantity"
+            required
+            ></v-text-field>
+        </v-flex>
+        <v-flex sm4 pr-3 pl-3>
+            <v-text-field
+            v-model="price"
+            label="Price"
+            required
+            ></v-text-field>
+        </v-flex>
+        <v-flex sm4 pr-3 pl-3>
+            <v-text-field
+            v-model="weight"
+            label="Weight"
+            required
+            ></v-text-field>
+        </v-flex>  
     </v-layout>
      <v-btn color="success" @click="addItem">Add Item</v-btn>
     </v-form>
