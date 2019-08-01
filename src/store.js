@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -10,16 +10,16 @@ export default new Vuex.Store({
   },
   mutations: {
     COMPARE_VISITS: (state, visits) => {
-      state.visits = visits
+      state.visits = visits;
     },
     SHOW_VISIT: (state, visit) => {
-      state.visits = visit
-    },
+      state.visits = visit;
+    }
   },
-  actions: {
-
-  },
-  plugins: [createPersistedState({
-    paths: ['visits']
-  })]
-})
+  actions: {},
+  plugins: [
+    createPersistedState({
+      paths: ["visits"]
+    })
+  ]
+});

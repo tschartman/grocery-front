@@ -1,20 +1,20 @@
 <template>
-  <GroceryVisits/>
+  <GroceryVisits />
 </template>
 
 <script>
-  import GroceryVisits from '../components/GroceryVisits'
+import GroceryVisits from "../components/GroceryVisits";
 
-  export default {
-    components: {
-      GroceryVisits,
-    }
+export default {
+  components: {
+    GroceryVisits
   }
+};
 </script>
 
 <style lang="scss">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

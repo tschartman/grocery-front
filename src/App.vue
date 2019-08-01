@@ -5,24 +5,23 @@
       <router-link to="/about">About</router-link>
     </div>
     <v-app>
-    <router-view/>
+      <router-view />
     </v-app>
   </div>
 </template>
 
-
 <script>
-import HelloWorld from './components/HelloWorld'
+import HelloWorld from "./components/HelloWorld";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld,
+    HelloWorld
   },
-  data () {
+  data() {
     return {
       //
-    }
+    };
   }
-}
+};
 </script>
