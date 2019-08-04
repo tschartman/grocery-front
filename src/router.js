@@ -30,6 +30,12 @@ let router = new Router({
         import(/* webpackChunkName: "about" */ "./components/AddVisit.vue")
     },
     {
+      path: "/addStore/",
+      name: "addStore",
+      component: () =>
+        import(/* webpackChunkName: "about" */ "./components/AddStore.vue")
+    },
+    {
       path: "/itemsView/",
       name: "itemsView",
       component: () =>

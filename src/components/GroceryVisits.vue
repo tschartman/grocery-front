@@ -38,14 +38,14 @@
 
               <v-list-tile-avatar>
                 <img
-                  :src="'https://logo.clearbit.com/' + visit.store + '.com'"
+                  :src="'https://logo.clearbit.com/' + visit.store.domain"
                 />
               </v-list-tile-avatar>
 
               <v-list-tile-content>
-                <v-list-tile-title>{{ visit.store }}</v-list-tile-title>
+                <v-list-tile-title>{{ visit.store.name }}</v-list-tile-title>
                 <v-list-tile-sub-title class="text--primary">{{
-                  visit.location
+                  visit.store.address
                 }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title
                   >{{ visit.total | toCurrency }}
@@ -108,6 +108,12 @@ export default {
   mounted() {
     this.$http.get("http://localhost:8000/visits/").then(result => {
       this.visits = result.data.results;
+      this.visits.forEach((visit, index) => {
+        this.$http.get(visit.store).then(result => {
+          this.visits[index]['store'] = result.data
+          console.log(this.visits[index])
+        })
+      })
     });
   }
 };

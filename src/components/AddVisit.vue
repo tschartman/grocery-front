@@ -2,10 +2,23 @@
   <v-form ref="form" lazy-validation>
     <div>
       <h1>Visit</h1>
+      <v-btn to="/addStore"><a>Add Store</a></v-btn>
       <v-layout row wrap pl-5 pr-5>
         <v-flex sm6 pl-3 pr-3>
-          <v-text-field v-model="store" label="Store" required></v-text-field>
-        </v-flex>
+            <v-autocomplete
+            v-model="model"
+            :items="items"
+            :loading="isLoading"
+            :search-input.sync="search"
+            hide-no-data
+            hide-selected
+            item-text="Name"
+            label="Stores"
+            placeholder="Start typing to Search"
+            return-object
+            > 
+            </v-autocomplete>
+          </v-flex>
         <v-flex sm6 pl-3 pr-3>
           <v-text-field
             label="Amount"
@@ -18,7 +31,7 @@
       <v-layout row wrap pl-5 pr-5>
         <v-flex pl-3 pr-3 xs6 sm6>
           <v-menu
-            v-model="menu2"
+            v-model="menu1"
             :close-on-content-click="false"
             :nudge-right="40"
             lazy
@@ -42,12 +55,37 @@
             <v-date-picker
               v-model="date"
               no-title
-              @input="menu2 = false"
+              @input="menu1 = false"
             ></v-date-picker>
           </v-menu>
         </v-flex>
         <v-flex pl-3 pr-3 sm6>
-          <v-text-field label="Address" v-model="address"></v-text-field>
+                   <v-menu
+            v-model="menu2"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            lazy
+            transition="scale-transition"
+            offset-y
+            full-width
+            max-width="290px"
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                v-model="time"
+                label="Time"
+                prepend-icon="event"
+                readonly
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-time-picker
+              v-model="time"
+              use-seconds
+              @input="menu1 = false"
+            ></v-time-picker>
+          </v-menu>
         </v-flex>
       </v-layout>
     </div>
@@ -72,6 +110,7 @@
 import Vue from "vue";
 import AddItems from "./AddItems.vue";
 
+
 Vue.component("AddItems", AddItems);
 
 export default {
@@ -80,14 +119,63 @@ export default {
     AddItems
   },
   data: () => ({
-    items: [],
+    visitItems: [],
+    stores: [],
+    isLoading: false,
+    model: null,
+    search: null,
     store: "",
-    address: "",
     amount: "",
     date: new Date().toISOString().substr(0, 10),
+    time: null,
     menu1: false,
     menu2: false
   }),
+
+computed: {
+      fields () {
+        if (!this.model) return []
+
+        return Object.keys(this.model).map(key => {
+          return {
+            key,
+            value: this.model[key] || 'n/a',
+          }
+        })
+      },
+      items () {
+        return this.stores.map(store => {
+          const Name = store.name
+          return Object.assign({}, store, { Name })
+        })
+      },
+    },
+
+    watch: {
+        model(val,oldval) {
+            this.store = val.url
+        },
+
+      search (val) {
+
+        // Items have already been requested
+        if (this.isLoading) return
+
+        this.isLoading = true
+
+        // Lazily load input items
+        this.$http
+        .get("http://localhost:8000/stores/")
+          .then(res => {
+            const stores = res.data.results
+            this.stores = stores
+          })
+          .catch(err => {
+            console.log(err)
+          })
+          .finally(() => (this.isLoading = false))
+      },
+    },
 
   methods: {
     reset() {
@@ -95,19 +183,19 @@ export default {
     },
 
     addItem(item) {
-      this.items.push(item);
+      this.visitItems.push(item);
     },
 
     submit() {
+
       this.$http
         .post("http://localhost:8000/visits/", {
-          date: this.date + "T12:21:56Z",
+          date: this.date + "T" + this.time,
           store: this.store,
           total: this.amount,
-          location: this.address
         })
         .then(result => {
-          this.items.forEach(item => {
+          this.visitItems.forEach(item => {
             this.$http
               .post("http://localhost:8000/items/", {
                 brand: item.brand,
@@ -120,7 +208,10 @@ export default {
               .catch(error => {
                 console.log(error.response);
               });
-          });
+          })
+          .then(
+            this.$router.push({ path: "groceryVisits" })
+          );
         })
         .catch(error => {
           console.log(error.response);
