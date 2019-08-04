@@ -9,10 +9,36 @@ import moment from "moment";
 Vue.config.productionTip = false;
 
     Vue.prototype.$http = Axios;
-    const token = localStorage.getItem("token");
-    if (token) {
-      Vue.prototype.$http.defaults.headers.common["Authorization"] = token;
-    }
+
+    Axios.interceptors.request.use(
+      (config) => {
+        let token = localStorage.getItem('token');
+    
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${ token }`;
+        }
+    
+        return config;
+      }, 
+    
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
+    Axios.interceptors.response.use((response) => {
+      return response
+    }, (error) => {
+      if (error.response.status == 401){
+        let refresh = localStorage.getItem('refresh');
+        if (refresh){
+          let newRefresh = {'refresh': refresh}
+          store
+          .dispatch("refresh", newRefresh)
+          .catch(err => console.log(err));
+        } 
+      }
+    });
 
 // currency filter
 Vue.filter("toCurrency", function(value) {

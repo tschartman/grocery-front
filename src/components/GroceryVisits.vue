@@ -48,7 +48,7 @@
                   visit.location
                 }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title
-                  >{{ visit.total | toCurrency }} - {{ visit.items }} Items
+                  >{{ visit.total | toCurrency }}
                 </v-list-tile-sub-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -106,8 +106,8 @@ export default {
   },
 
   mounted() {
-    this.$http.get("data.json").then(result => {
-      this.visits = result.data;
+    this.$http.get("http://localhost:8000/visits/").then(result => {
+      this.visits = result.data.results;
     });
   }
 };

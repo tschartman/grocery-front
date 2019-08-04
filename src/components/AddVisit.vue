@@ -99,7 +99,7 @@ export default {
     },
 
     submit() {
-      this.$api
+      this.$http
         .post("http://localhost:8000/visits/", {
           date: this.date + "T12:21:56Z",
           store: this.store,
@@ -108,7 +108,7 @@ export default {
         })
         .then(result => {
           this.items.forEach(item => {
-            this.$api
+            this.$http
               .post("http://localhost:8000/items/", {
                 brand: item.brand,
                 name: item.name,
