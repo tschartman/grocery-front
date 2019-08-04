@@ -3,16 +3,16 @@ import "./plugins/vuetify";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import axios from "axios";
+import Axios from "axios";
 import moment from "moment";
 
 Vue.config.productionTip = false;
 
-Vue.use({
-  install(Vue) {
-    Vue.prototype.$api = axios.create({});
-  }
-});
+    Vue.prototype.$http = Axios;
+    const token = localStorage.getItem("token");
+    if (token) {
+      Vue.prototype.$http.defaults.headers.common["Authorization"] = token;
+    }
 
 // currency filter
 Vue.filter("toCurrency", function(value) {

@@ -114,7 +114,7 @@ export default {
 
   methods: {},
   mounted() {
-    this.$api.get("detail.json").then(result => {
+    this.$http.get("detail.json").then(result => {
       this.items = result.data;
     });
   }

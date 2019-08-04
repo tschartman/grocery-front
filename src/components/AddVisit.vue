@@ -100,29 +100,23 @@ export default {
 
     submit() {
       this.$api
-        .post(
-          "http://localhost:8000/visits/",
-          {
-            date: this.date + "T12:21:56Z",
-            store: this.store,
-            total: this.amount,
-            location: this.address
-          },
-        )
+        .post("http://localhost:8000/visits/", {
+          date: this.date + "T12:21:56Z",
+          store: this.store,
+          total: this.amount,
+          location: this.address
+        })
         .then(result => {
           this.items.forEach(item => {
             this.$api
-              .post(
-                "http://localhost:8000/items/",
-                {
-                  brand: item.brand,
-                  name: item.name,
-                  price: item.price,
-                  quantity: item.quantity,
-                  weight: item.weight,
-                  visit: result.data.url
-                },
-              )
+              .post("http://localhost:8000/items/", {
+                brand: item.brand,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                weight: item.weight,
+                visit: result.data.url
+              })
               .catch(error => {
                 console.log(error.response);
               });

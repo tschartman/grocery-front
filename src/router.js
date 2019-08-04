@@ -1,11 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+import Home from './views/Home.vue';
 
 Vue.use(Router);
 
-export default new Router({
-  routes: [
+let router = new Router({
+  mode: 'history',  routes: [
     {
       path: "/",
       name: "home",
@@ -36,6 +36,24 @@ export default new Router({
         import(/* webpackChunkName: "about" */ "./components/ItemsView.vue")
     },
     {
+      path: "/login",
+      name: "login",
+      component: () =>
+        import(/* webpackChunkName: "about" */ "./components/Login.vue")
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: () =>
+        import(/* webpackChunkName: "about" */ "./components/Register.vue")
+    },
+    {
+      path: "/secure",
+      name: "secure",
+      component: () =>
+        import(/* webpackChunkName: "about" */ "./components/Secure.vue")
+    },
+    {
       path: "/about",
       name: "about",
       // route level code-splitting
@@ -46,3 +64,17 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
+    }
+    next('/login') 
+  } else {
+    next() 
+  }
+})
+
+export default router

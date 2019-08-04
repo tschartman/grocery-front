@@ -106,7 +106,7 @@ export default {
   },
 
   mounted() {
-    this.$api.get("data.json").then(result => {
+    this.$http.get("data.json").then(result => {
       this.visits = result.data;
     });
   }
