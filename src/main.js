@@ -14,7 +14,7 @@ Vue.config.productionTip = false;
     Axios.interceptors.request.use(
       (config) => {
         let token = localStorage.getItem('token');
-    
+
         if (token) {
           config.headers['Authorization'] = `Bearer ${ token }`;
         }
@@ -31,13 +31,7 @@ Vue.config.productionTip = false;
       return response
     }, (error) => {
       if (error.response.status == 401){
-        let refresh = localStorage.getItem('refresh');
-        if (refresh){
-          let newRefresh = {'refresh': refresh}
-          store
-          .dispatch("refresh", newRefresh)
-          .catch(err => console.log(err));
-        } 
+
       }
     });
 
@@ -63,5 +57,8 @@ Vue.filter("formatDate", function(value) {
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created: function () {
+    store.dispatch('inspect')
+  }
 }).$mount("#app");

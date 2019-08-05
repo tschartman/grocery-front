@@ -3,7 +3,7 @@
     <v-toolbar color="teal" dark>
       <v-toolbar-side-icon></v-toolbar-side-icon>
 
-      <v-toolbar-title> {{ visit.store }} </v-toolbar-title>
+      <v-toolbar-title> {{ visit.store.name }} </v-toolbar-title>
 
       <v-divider class="mx-3" inset vertical></v-divider>
 
@@ -114,6 +114,7 @@ export default {
 
   methods: {},
   mounted() {
+    console.log(visit.items)
     this.$http.get("detail.json").then(result => {
       this.items = result.data;
     });

@@ -111,7 +111,6 @@ export default {
       this.visits.forEach((visit, index) => {
         this.$http.get(visit.store).then(result => {
           this.visits[index]['store'] = result.data
-          console.log(this.visits[index])
         })
       })
     });
