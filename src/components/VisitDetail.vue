@@ -114,10 +114,12 @@ export default {
 
   methods: {},
   mounted() {
-    console.log(visit.items)
-    this.$http.get("detail.json").then(result => {
-      this.items = result.data;
+    this.visit.items.forEach(item => {
+        this.$http.get(item).then(result => {
+        this.items.push(result.data)
+      });
     });
+    
   }
 };
 </script>

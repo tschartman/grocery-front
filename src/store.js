@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import router from './router'
 import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
@@ -64,15 +65,22 @@ export default new Vuex.Store({
     },
     inspect({commit}){
       const token = this.state.token;
+      const refresh = localStorage.getItem('refresh');
       if(token) {
         const decoded = jwt_decode(token);
+        const decoded2 = jwt_decode(refresh);
         const exp = decoded.exp
-        const orig_iat = decoded.orig_iat
-        if(exp - (Date.now()/1000) < 200 && (Date.now()/1000) - orig_iat < 86400){
-          this.dispatch('logout')
-        } else if (exp -(Date.now()/1000) < 200){
-          this.dispatch('refresh', localStorage.getItem('refresh'))
+        const orig_iat = decoded2.exp
+        // if token expires in 30 minutes and is not reaching lifespan
+        if(exp - (Date.now()/1000) < 1800 && (Date.now()/1000) - orig_iat < 628200){
+          //token expires soon refresh
+         this.dispatch('refresh', localStorage.getItem('refresh'))
+         console.log("refreshed")
+        } else if (exp -(Date.now()/1000) < 1800){
+        // token refresh expires soon so logout
+        this.dispatch('logout')
         } else {
+        //token is good, do nothing
         }
       }
     },
@@ -118,6 +126,7 @@ export default new Vuex.Store({
     logout({ commit }) {
       return new Promise((resolve, reject) => {
         commit("logout");
+        router.push({ path: "login" });
         resolve();
       });
     }
