@@ -5,7 +5,7 @@
       <v-btn to="/addStore"><a>Add Store</a></v-btn>
       <v-layout row wrap pl-5 pr-5>
         <v-flex sm6 pl-3 pr-3>
-            <v-autocomplete
+          <v-autocomplete
             v-model="model"
             :items="items"
             :loading="isLoading"
@@ -16,9 +16,9 @@
             label="Stores"
             placeholder="Start typing to Search"
             return-object
-            > 
-            </v-autocomplete>
-          </v-flex>
+          >
+          </v-autocomplete>
+        </v-flex>
         <v-flex sm6 pl-3 pr-3>
           <v-text-field
             label="Amount"
@@ -60,7 +60,7 @@
           </v-menu>
         </v-flex>
         <v-flex pl-3 pr-3 sm6>
-                   <v-menu
+          <v-menu
             v-model="menu2"
             :close-on-content-click="false"
             :nudge-right="40"
@@ -110,7 +110,6 @@
 import Vue from "vue";
 import AddItems from "./AddItems.vue";
 
-
 Vue.component("AddItems", AddItems);
 
 export default {
@@ -132,50 +131,49 @@ export default {
     menu2: false
   }),
 
-computed: {
-      fields () {
-        if (!this.model) return []
+  computed: {
+    fields() {
+      if (!this.model) return [];
 
-        return Object.keys(this.model).map(key => {
-          return {
-            key,
-            value: this.model[key] || 'n/a',
-          }
-        })
-      },
-      items () {
-        return this.stores.map(store => {
-          const Name = store.name
-          return Object.assign({}, store, { Name })
-        })
-      },
+      return Object.keys(this.model).map(key => {
+        return {
+          key,
+          value: this.model[key] || "n/a"
+        };
+      });
+    },
+    items() {
+      return this.stores.map(store => {
+        const Name = store.name;
+        return Object.assign({}, store, { Name });
+      });
+    }
+  },
+
+  watch: {
+    model(val, oldval) {
+      this.store = val.url;
     },
 
-    watch: {
-        model(val,oldval) {
-            this.store = val.url
-        },
+    search(val) {
+      // Items have already been requested
+      if (this.isLoading) return;
 
-      search (val) {
+      this.isLoading = true;
 
-        // Items have already been requested
-        if (this.isLoading) return
-
-        this.isLoading = true
-
-        // Lazily load input items
-        this.$http
+      // Lazily load input items
+      this.$http
         .get("http://localhost:8000/stores/")
-          .then(res => {
-            const stores = res.data.results
-            this.stores = stores
-          })
-          .catch(err => {
-            console.log(err)
-          })
-          .finally(() => (this.isLoading = false))
-      },
-    },
+        .then(res => {
+          const stores = res.data.results;
+          this.stores = stores;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => (this.isLoading = false));
+    }
+  },
 
   methods: {
     reset() {
@@ -187,31 +185,29 @@ computed: {
     },
 
     submit() {
-
       this.$http
         .post("http://localhost:8000/visits/", {
           date: this.date + "T" + this.time,
           store: this.store,
-          total: this.amount,
+          total: this.amount
         })
         .then(result => {
-          this.visitItems.forEach(item => {
-            this.$http
-              .post("http://localhost:8000/items/", {
-                brand: item.brand,
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-                weight: item.weight,
-                visit: result.data.url
-              })
-              .catch(error => {
-                console.log(error.response);
-              });
-          })
-          .then(
-            this.$router.push({ path: "groceryVisits" })
-          );
+          this.visitItems
+            .forEach(item => {
+              this.$http
+                .post("http://localhost:8000/items/", {
+                  brand: item.brand,
+                  name: item.name,
+                  price: item.price,
+                  quantity: item.quantity,
+                  weight: item.weight,
+                  visit: result.data.url
+                })
+                .catch(error => {
+                  console.log(error.response);
+                });
+            })
+            .then(this.$router.push({ path: "groceryVisits" }));
         })
         .catch(error => {
           console.log(error.response);

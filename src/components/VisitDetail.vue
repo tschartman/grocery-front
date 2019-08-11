@@ -115,11 +115,10 @@ export default {
   methods: {},
   mounted() {
     this.visit.items.forEach(item => {
-        this.$http.get(item).then(result => {
-        this.items.push(result.data)
+      this.$http.get(item).then(result => {
+        this.items.push(result.data);
       });
     });
-    
   }
 };
 </script>

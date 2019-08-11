@@ -37,9 +37,7 @@
               </v-list-tile-action>
 
               <v-list-tile-avatar>
-                <img
-                  :src="'https://logo.clearbit.com/' + visit.store.domain"
-                />
+                <img :src="'https://logo.clearbit.com/' + visit.store.domain" />
               </v-list-tile-avatar>
 
               <v-list-tile-content>
@@ -66,7 +64,7 @@
 
 <script>
 import { mapMutations } from "vuex";
-import jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 
 export default {
   data() {
@@ -111,9 +109,9 @@ export default {
       this.visits = result.data.results;
       this.visits.forEach((visit, index) => {
         this.$http.get(visit.store).then(result => {
-          this.visits[index]['store'] = result.data
-        })
-      })
+          this.visits[index]["store"] = result.data;
+        });
+      });
     });
   }
 };

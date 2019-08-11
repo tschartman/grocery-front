@@ -6,34 +6,36 @@ import store from "./store";
 import Axios from "axios";
 import moment from "moment";
 
-
 Vue.config.productionTip = false;
 
-    Vue.prototype.$http = Axios;
+Vue.prototype.$http = Axios;
 
-    Axios.interceptors.request.use(
-      (config) => {
-        let token = localStorage.getItem('token');
+Axios.interceptors.request.use(
+  config => {
+    let token = localStorage.getItem("token");
 
-        if (token) {
-          config.headers['Authorization'] = `Bearer ${ token }`;
-        }
-    
-        return config;
-      }, 
-    
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
 
-    Axios.interceptors.response.use((response) => {
-      return response
-    }, (error) => {
-      if (error.response.status == 401){
+    return config;
+  },
 
-      }
-    });
+  error => {
+    return Promise.reject(error);
+  }
+);
+
+Axios.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    if (error.response.status == 401) {
+      router.push("/login");
+    }
+  }
+);
 
 // currency filter
 Vue.filter("toCurrency", function(value) {
@@ -58,7 +60,7 @@ new Vue({
   router,
   store,
   render: h => h(App),
-  created: function () {
-    store.dispatch('inspect')
+  created: function() {
+    store.dispatch("inspect");
   }
 }).$mount("#app");

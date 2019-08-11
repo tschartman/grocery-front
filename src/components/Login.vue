@@ -1,21 +1,45 @@
 <template>
-  <div>
-    <form class="login" @submit.prevent="login">
-      <h1>Sign in</h1>
-      <label>Username</label>
-      <input required v-model="username" type="text" placeholder="Name" />
-      <label>Password</label>
-      <input
-        required
-        v-model="password"
-        type="password"
-        placeholder="Password"
-      />
-      <hr />
-      <button type="submit">Login</button>
-    </form>
-        <v-btn to="/register">Sign Up</v-btn>
-  </div>
+  <v-app id="inspire">
+    <v-content>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4>
+            <v-card class="elevation-12">
+              <v-toolbar color="primary" dark flat>
+                <v-toolbar-title>Login form</v-toolbar-title>
+                <v-spacer></v-spacer>
+              </v-toolbar>
+              <v-card-text>
+                <form @submit.prevent="login">
+                  <v-text-field
+                    v-model="username"
+                    label="Login"
+                    name="login"
+                    prepend-icon="person"
+                    type="text"
+                  ></v-text-field>
+
+                  <v-text-field
+                    v-model="password"
+                    id="password"
+                    label="Password"
+                    name="password"
+                    prepend-icon="lock"
+                    type="password"
+                  ></v-text-field>
+                </form>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn to="/register" color="primary">Sign up</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn @click="login" color="success">Login</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 <script>
 export default {
