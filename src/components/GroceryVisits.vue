@@ -66,6 +66,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+import jwt_decode from 'jwt-decode';
 
 export default {
   data() {

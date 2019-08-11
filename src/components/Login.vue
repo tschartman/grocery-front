@@ -14,6 +14,7 @@
       <hr />
       <button type="submit">Login</button>
     </form>
+        <v-btn to="/register">Sign Up</v-btn>
   </div>
 </template>
 <script>

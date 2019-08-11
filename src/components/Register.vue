@@ -2,9 +2,19 @@
   <div>
     <h4>Register</h4>
     <form @submit.prevent="register">
-      <label for="name">Name</label>
+      <label for="first_name">Fist Name</label>
       <div>
-        <input id="name" type="text" v-model="name" required autofocus />
+        <input id="first_name" type="text" v-model="first_name" required autofocus />
+      </div>
+
+      <label for="last_name">Last Name</label>
+      <div>
+        <input id="last_name" type="text" v-model="last_name" required autofocus />
+      </div>
+
+      <label for="last_name">Username</label>
+      <div>
+        <input id="username" type="text" v-model="username" required autofocus />
       </div>
 
       <label for="email">E-Mail Address</label>
@@ -37,25 +47,32 @@
 export default {
   data() {
     return {
-      name: "",
+      first_name: "",
+      last_name: "",
+      username: "",
       email: "",
       password: "",
       password_confirmation: "",
-      is_admin: null
     };
   },
   methods: {
     register: function() {
       let data = {
-        name: this.name,
+        first_name: this.first_name,
+        last_name: this.last_name,
+        username: this.username,
         email: this.email,
         password: this.password,
-        is_admin: this.is_admin
       };
-      this.$store
-        .dispatch("register", data)
-        .then(() => this.$router.push("/"))
-        .catch(err => console.log(err));
+      console.log(data)
+       this.$http
+        .post("http://localhost:8000/users/", data)
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
     }
   }
 };

@@ -104,25 +104,6 @@ export default new Vuex.Store({
         });
       });
     },
-    register({ commit }, user) {
-      return new Promise((resolve, reject) => {
-        commit("auth_request");
-        axios({
-          url: "http://localhost:8000/api/token/",
-          data: user,
-          method: "POST"
-        })
-          .then(resp => {
-            const token = resp.data.access;
-            commit("auth_success", token);
-            resolve(resp);
-          })
-          .catch(err => {
-            commit("auth_error", err);
-            reject(err);
-          });
-      });
-    },
     logout({ commit }) {
       return new Promise((resolve, reject) => {
         commit("logout");
@@ -133,7 +114,8 @@ export default new Vuex.Store({
   },
   getters: {
     isLoggedIn: state => !!state.token,
-    authStatus: state => state.status
+    authStatus: state => state.status,
+    token: state => state.token 
   },
   plugins: [
     createPersistedState({
