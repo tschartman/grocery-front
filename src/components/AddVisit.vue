@@ -94,7 +94,7 @@
     <AddItems @addItem="addItem" />
     <v-layout row wrap pl-5 pr-5>
       <v-flex sm6 pl-3 pr-3>
-        <v-btn color="error" @click="reset">
+        <v-btn color="error" @click="cancel">
           Cancel
         </v-btn>
       </v-flex>
@@ -176,8 +176,8 @@ export default {
   },
 
   methods: {
-    reset() {
-      this.$refs.form.reset();
+    cancel() {
+      this.$router.push("/");
     },
 
     addItem(item) {
@@ -207,7 +207,7 @@ export default {
                   console.log(error.response);
                 });
             })
-            .then(this.$router.push({ path: "groceryVisits" }));
+            .then(this.$router.push("/"));
         })
         .catch(error => {
           console.log(error.response);

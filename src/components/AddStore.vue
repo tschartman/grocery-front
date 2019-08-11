@@ -1,59 +1,67 @@
 <template>
-  <v-form ref="form" lazy-validation>
-    <div>
-      <h1>Store</h1>
-      <v-layout row wrap pl-5 pr-5>
-        <v-flex pr-3 sm12>
-          <v-autocomplete
-            v-model="model"
-            :items="items"
-            :loading="isLoading"
-            :search-input.sync="search"
-            hide-no-data
-            hide-selected
-            item-text="Name"
-            label="Stores"
-            placeholder="Start typing to Search"
-            return-object
-          >
-          </v-autocomplete>
-        </v-flex>
-      </v-layout>
-      <v-layout row wrap pl-5 pr-5>
-        <v-flex pl-3 pr-3 sm12>
-          <v-text-field label="Address Line 1" v-model="address"></v-text-field>
-        </v-flex>
-      </v-layout>
-      <v-layout row wrap pl-5 pr-5>
-        <v-flex pl-3 pr-3 sm6>
-          <v-text-field label="City" v-model="city"></v-text-field>
-        </v-flex>
-        <v-flex pl-3 pr-3 sm2>
-          <v-select
-            :items="states"
-            filled
-            label="State"
-            v-model="state"
-          ></v-select>
-        </v-flex>
-        <v-flex pl-3 pr-3 sm4>
-          <v-text-field label="Zip" v-model="zip"></v-text-field>
-        </v-flex>
-      </v-layout>
-      <v-layout row wrap pl-5 pr-5>
-        <v-flex sm6 pl-3 pr-3>
-          <v-btn color="error" @click="reset">
-            Cancel
-          </v-btn>
-        </v-flex>
-        <v-flex sm6 pl-3 pr-3>
-          <v-btn color="success" @click="submit">
-            submit
-          </v-btn>
-        </v-flex>
-      </v-layout>
-    </div>
-  </v-form>
+<v-content>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4>
+            <v-card class="elevation-12">
+              <v-toolbar color="primary" dark flat>
+                <v-toolbar-title>Store</v-toolbar-title>
+                <v-spacer></v-spacer>
+              </v-toolbar>
+              <v-card-text>
+                <v-form ref="form" lazy-validation>
+                  <div>
+                    <v-layout>
+                      <v-flex sm12>
+                        <v-autocomplete
+                          v-model="model"
+                          :items="items"
+                          :loading="isLoading"
+                          :search-input.sync="search"
+                          hide-no-data
+                          hide-selected
+                          item-text="Name"
+                          label="Stores"
+                          placeholder="Start typing to Search"
+                          return-object
+                        >
+                        </v-autocomplete>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout>
+                      <v-flex sm12>
+                        <v-text-field label="Address Line 1" v-model="address"></v-text-field>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout>
+                      <v-flex pr-3 sm6>
+                        <v-text-field label="City" v-model="city"></v-text-field>
+                      </v-flex>
+                      <v-flex sm2>
+                        <v-select
+                          :items="states"
+                          filled
+                          label="State"
+                          v-model="state"
+                        ></v-select>
+                      </v-flex>
+                      <v-flex pl-3 sm4>
+                        <v-text-field label="Zip" v-model="zip"></v-text-field>
+                      </v-flex>
+                    </v-layout>
+                  </div>
+                </v-form>
+             </v-card-text>
+              <v-card-actions>
+                <v-btn color="error" @click="cancel">Cancel</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn color="success" @click="submit">submit</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
 </template>
 <script>
 export default {
@@ -189,12 +197,12 @@ export default {
       this.$http
         .post("http://localhost:8000/stores/", store)
         .then(result => {
-          this.$router.push({ path: "addVisit" });
+          this.$router.push("/addVisit");
         })
         .catch(error => {});
     },
-    reset() {
-      this.$refs.form.reset();
+    cancel() {
+      this.$router.push("/addVisit")
     }
   }
 };
