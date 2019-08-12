@@ -9,9 +9,10 @@
               <v-spacer></v-spacer> 
             </v-toolbar>
             <v-card-text>
-              <form @submit.prevent="register">
+              <form>
               <h3>User Info</h3>
                 <v-text-field
+                  @keyup.enter="submit"
                   v-model="firstName"
                   :error-messages="firstNameErrors"
                   label="First Name"
@@ -20,6 +21,7 @@
                   @blur="$v.firstName.$touch()"
                 ></v-text-field>
                 <v-text-field
+                  @keyup.enter="submit"
                   v-model="lastName"
                   :error-messages="lastNameErrors"
                   label="Last Name"
@@ -28,6 +30,7 @@
                   @blur="$v.lastName.$touch()"
                 ></v-text-field>
                 <v-text-field
+                  @keyup.enter="submit"
                   v-model="email"
                   :error-messages="emailErrors"
                   label="E-mail"
@@ -37,6 +40,7 @@
                 ></v-text-field>
                 <h3>Password</h3>
                 <v-text-field
+                  @keyup.enter="submit"
                   v-model="password"
                   :error-messages="passwordErrors"
                   type="password"
@@ -46,6 +50,7 @@
                   @blur="$v.password.$touch()"
                 ></v-text-field>
                 <v-text-field
+                  @keyup.enter="submit"
                   v-model="repeatPassword"
                   :error-messages="repeatPasswordErrors"
                   type="password"

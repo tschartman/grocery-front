@@ -1,5 +1,4 @@
 <template>
-  <v-app id="inspire">
     <v-content>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
@@ -10,20 +9,22 @@
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
-                <form @submit.prevent="login">
+                <form>
                   <v-text-field
+                    @keyup.enter="login"
                     v-model="username"
-                    :error-messages="nameErrors"
-                    label="Login"
+                    :error-messages="usernameErrors"
+                    label="Email"
                     name="login"
                     prepend-icon="person"
                     type="text"
-                  required
-                  @input="$v/username.$touch()"
-                  @blur="$v.username.$touch()"
+                    required
+                    @input="$v.username.$touch()"
+                    @blur="$v.username.$touch()"
                   ></v-text-field>
 
                   <v-text-field
+                    @keyup.enter="login"
                     v-model="password"
                     :error-messages="passwordErrors"
                     id="password"
@@ -48,7 +49,6 @@
         </v-layout>
       </v-container>
     </v-content>
-  </v-app>
 </template>
 <script>
 import { validationMixin } from "vuelidate";
@@ -71,7 +71,7 @@ export default {
     };
   },
   computed: {
-    nameErrors() {
+    usernameErrors() {
       const errors = [];
       if (!this.$v.username.$dirty) return errors;
       !this.$v.username.required && errors.push("Username is required.");
@@ -85,14 +85,16 @@ export default {
     }
   },
   methods: {
-    login: function() {
+    login() {
       this.$v.$touch();
-      let username = this.username;
-      let password = this.password;
-      this.$store
-        .dispatch("login", { username, password })
-        .then(() => this.$router.push("/"))
-        .catch(err => this.authError = "Username or password incorrect");
+      if (!this.$v.$invalid) {
+        let username = this.username;
+        let password = this.password;
+        this.$store
+          .dispatch("login", { username, password })
+          .then(() => this.$router.push("/"))
+          .catch(err => this.authError = "Username or password incorrect");
+      }
     }
   }
 };
