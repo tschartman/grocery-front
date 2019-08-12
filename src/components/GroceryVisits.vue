@@ -1,65 +1,67 @@
 <template>
-  <v-layout row>
-    <v-flex xs12 sm6 offset-sm3>
-      <v-card>
-        <v-toolbar color="primary" dark>
-          <v-toolbar-side-icon></v-toolbar-side-icon>
+  <v-container fluid fill-height>
+    <v-layout justify-center>
+      <v-flex xs12 sm8 m4>
+        <v-card class="elevation-12">
+          <v-toolbar color="primary" dark>
+            <v-toolbar-side-icon></v-toolbar-side-icon>
 
-          <v-toolbar-title>Visits</v-toolbar-title>
-          <v-divider class="mx-3" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-divider vertical></v-divider>
-            <v-btn flat @click="compareView = !compareView"
-              >Compare Visits</v-btn
-            >
-            <v-divider vertical></v-divider>
-          </v-toolbar-items>
-          <v-btn to="/addVisit" icon>
-            <v-icon>add</v-icon>
-          </v-btn>
-        </v-toolbar>
+            <v-toolbar-title>Visits</v-toolbar-title>
+            <v-divider class="mx-3" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+              <v-divider vertical></v-divider>
+              <v-btn flat @click="compareView = !compareView"
+                >Compare Visits</v-btn
+              >
+              <v-divider vertical></v-divider>
+            </v-toolbar-items>
+            <v-btn to="/addVisit" icon>
+              <v-icon>add</v-icon>
+            </v-btn>
+          </v-toolbar>
 
-        <v-list three-line>
-          <template>
-            <v-list-tile
-              v-for="visit in visits"
-              :key="visit.id"
-              avatar
-              @click.capture.stop="tileClick(visit)"
-            >
-              <v-list-tile-action v-if="compareView">
-                <v-checkbox
-                  @click.prevent=""
-                  v-model="selected"
-                  :value="visit"
-                ></v-checkbox>
-              </v-list-tile-action>
+          <v-list three-line>
+            <template>
+              <v-list-tile
+                v-for="visit in visits"
+                :key="visit.id"
+                avatar
+                @click.capture.stop="tileClick(visit)"
+              >
+                <v-list-tile-action v-if="compareView">
+                  <v-checkbox
+                    @click.prevent=""
+                    v-model="selected"
+                    :value="visit"
+                  ></v-checkbox>
+                </v-list-tile-action>
 
-              <v-list-tile-avatar>
-                <img :src="'https://logo.clearbit.com/' + visit.store.domain" />
-              </v-list-tile-avatar>
+                <v-list-tile-avatar>
+                  <img :src="'https://logo.clearbit.com/' + visit.store.domain" />
+                </v-list-tile-avatar>
 
-              <v-list-tile-content>
-                <v-list-tile-title>{{ visit.store.name }}</v-list-tile-title>
-                <v-list-tile-sub-title class="text--primary">{{
-                  visit.store.address
-                }}</v-list-tile-sub-title>
-                <v-list-tile-sub-title
-                  >{{ visit.total | toCurrency }}
-                </v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </template>
-        </v-list>
-      </v-card>
-      <div>
-        <v-btn v-if="compareView" @click="compareVisits" color="info"
-          >Compare</v-btn
-        >
-      </div>
-    </v-flex>
-  </v-layout>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ visit.store.name }}</v-list-tile-title>
+                  <v-list-tile-sub-title class="text--primary">{{
+                    visit.store.address
+                  }}</v-list-tile-sub-title>
+                  <v-list-tile-sub-title
+                    >{{ visit.total | toCurrency }}
+                  </v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </template>
+          </v-list>
+        </v-card>
+        <div>
+          <v-btn v-if="compareView" @click="compareVisits" color="info"
+            >Compare</v-btn
+          >
+        </div>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>

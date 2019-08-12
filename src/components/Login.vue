@@ -13,21 +13,30 @@
                 <form @submit.prevent="login">
                   <v-text-field
                     v-model="username"
+                    :error-messages="nameErrors"
                     label="Login"
                     name="login"
                     prepend-icon="person"
                     type="text"
+                  required
+                  @input="$v/username.$touch()"
+                  @blur="$v.username.$touch()"
                   ></v-text-field>
 
                   <v-text-field
                     v-model="password"
+                    :error-messages="passwordErrors"
                     id="password"
                     label="Password"
                     name="password"
                     prepend-icon="lock"
                     type="password"
+                    required
+                    @input="$v.password.$touch()"
+                    @blur="$v.password.$touch()"
                   ></v-text-field>
                 </form>
+                <p class="authError" v-if="authError">{{ authError }}</p>
               </v-card-text>
               <v-card-actions>
                 <v-btn to="/register" color="primary">Sign up</v-btn>
@@ -42,22 +51,54 @@
   </v-app>
 </template>
 <script>
+import { validationMixin } from "vuelidate";
+import { required } from "vuelidate/lib/validators";
+
 export default {
+  mixins: [validationMixin],
+
+  validations: {
+    username: { required },
+    password: { required },
+
+  },
+
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
+      authError: "",
     };
+  },
+  computed: {
+    nameErrors() {
+      const errors = [];
+      if (!this.$v.username.$dirty) return errors;
+      !this.$v.username.required && errors.push("Username is required.");
+      return errors;
+    },
+      passwordErrors() {
+      const errors = [];
+      if (!this.$v.password.$dirty) return errors;
+      !this.$v.password.required && errors.push("Password is required.");
+      return errors;
+    }
   },
   methods: {
     login: function() {
+      this.$v.$touch();
       let username = this.username;
       let password = this.password;
       this.$store
         .dispatch("login", { username, password })
         .then(() => this.$router.push("/"))
-        .catch(err => console.log(err));
+        .catch(err => this.authError = "Username or password incorrect");
     }
   }
 };
 </script>
+<style>
+.authError {
+  color: red;
+}
+</style>

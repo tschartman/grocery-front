@@ -6,27 +6,26 @@
           <v-card class="elevation-12">
             <v-toolbar color="primary" dark flat>
               <v-toolbar-title>Register</v-toolbar-title>
-              <v-spacer></v-spacer>
+              <v-spacer></v-spacer> 
             </v-toolbar>
             <v-card-text>
               <form @submit.prevent="register">
+              <h3>User Info</h3>
                 <v-text-field
-                  v-model="first_name"
-                  :error-messages="nameErrors"
-                  :counter="10"
+                  v-model="firstName"
+                  :error-messages="firstNameErrors"
                   label="First Name"
                   required
-                  @input="$v.name.$touch()"
-                  @blur="$v.name.$touch()"
+                  @input="$v.firstName.$touch()"
+                  @blur="$v.firstName.$touch()"
                 ></v-text-field>
                 <v-text-field
-                  v-model="last_name"
-                  :error-messages="nameErrors"
-                  :counter="10"
+                  v-model="lastName"
+                  :error-messages="lastNameErrors"
                   label="Last Name"
                   required
-                  @input="$v.name.$touch()"
-                  @blur="$v.name.$touch()"
+                  @input="$v.lastName.$touch()"
+                  @blur="$v.lastName.$touch()"
                 ></v-text-field>
                 <v-text-field
                   v-model="email"
@@ -36,13 +35,24 @@
                   @input="$v.email.$touch()"
                   @blur="$v.email.$touch()"
                 ></v-text-field>
+                <h3>Password</h3>
                 <v-text-field
                   v-model="password"
-                  :error-messages="emailErrors"
+                  :error-messages="passwordErrors"
+                  type="password"
                   label="Password"
                   required
-                  @input="$v.email.$touch()"
-                  @blur="$v.email.$touch()"
+                  @input="$v.password.$touch()"
+                  @blur="$v.password.$touch()"
+                ></v-text-field>
+                <v-text-field
+                  v-model="repeatPassword"
+                  :error-messages="repeatPasswordErrors"
+                  type="password"
+                  label="Confirm Password"
+                  required
+                  @input="$v.repeatPassword.$touch()"
+                  @blur="$v.repeatPassword.$touch()"
                 ></v-text-field>
                 <v-checkbox
                   v-model="checkbox"
@@ -67,14 +77,22 @@
 </template>
 <script>
 import { validationMixin } from "vuelidate";
-import { required, maxLength, email } from "vuelidate/lib/validators";
+import { required, sameAs, minLength, email } from "vuelidate/lib/validators";
 
 export default {
   mixins: [validationMixin],
 
   validations: {
-    name: { required, maxLength: maxLength(10) },
+    firstName: { required },
+    lastName: { required },
     email: { required, email },
+    password: {
+      required,
+      minLength: minLength(8)
+    },
+    repeatPassword: {
+      sameAsPassword: sameAs('password')
+    },
     checkbox: {
       checked(val) {
         return val;
@@ -84,12 +102,11 @@ export default {
 
   data() {
     return {
-      first_name: "",
-      last_name: "",
-      username: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
-      password_confirmation: "",
+      repeatPassword: "",
       checkbox: false
     };
   },
@@ -100,12 +117,16 @@ export default {
       !this.$v.checkbox.checked && errors.push("You must agree to continue!");
       return errors;
     },
-    nameErrors() {
+    firstNameErrors() {
       const errors = [];
-      if (!this.$v.name.$dirty) return errors;
-      !this.$v.name.maxLength &&
-        errors.push("Name must be at most 10 characters long");
-      !this.$v.name.required && errors.push("Name is required.");
+      if (!this.$v.firstName.$dirty) return errors;
+      !this.$v.firstName.required && errors.push("First Name is required.");
+      return errors;
+    },
+    lastNameErrors() {
+      const errors = [];
+      if (!this.$v.lastName.$dirty) return errors;
+      !this.$v.lastName.required && errors.push("Last Name is required.");
       return errors;
     },
     emailErrors() {
@@ -114,26 +135,40 @@ export default {
       !this.$v.email.email && errors.push("Must be valid e-mail");
       !this.$v.email.required && errors.push("E-mail is required");
       return errors;
+    },
+    passwordErrors() {
+      const errors = [];
+      if (!this.$v.password.$dirty) return errors;
+      !this.$v.password.minLength && errors.push("Must be valid Password");
+      !this.$v.password.required && errors.push("Password is required");
+      return errors;
+    },
+    repeatPasswordErrors() {
+      const errors = [];
+      if (!this.$v.repeatPassword.$dirty) return errors;
+      !this.$v.repeatPassword.sameAsPassword && errors.push("Passwords must match");
+      return errors;
     }
   },
   methods: {
     submit: function() {
       this.$v.$touch();
-      let data = {
-        first_name: this.first_name,
-        last_name: this.last_name,
-        username: this.username,
-        email: this.email,
-        password: this.password
-      };
-      this.$http
-        .post("http://localhost:8000/users/", data)
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      if (!this.$v.$invalid) {
+        let data = {
+          first_name: this.firstName,
+          last_name: this.lastName,
+          username: this.email,
+          password: this.password
+        };
+        this.$http
+          .post("http://localhost:8000/users/", data)
+          .then(res => {
+            this.$router.push("/login");    
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
     cancel: function() {
       this.$router.push("/login");
