@@ -2,12 +2,16 @@
   <v-form ref="form" lazy-validation>
     <div>
       <h1>Visit</h1>
-
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <v-btn color="red lighten-2" dark v-on="on">
+        <v-layout row wrap pl-5 pr-5>
+          <v-flex sm6 pl-3 pr-3>
+            Store not listed?
+          <a color="red lighten-2" dark v-on="on">
             Add Store
-          </v-btn>
+          </a>
+          </v-flex>
+        </v-layout>
         </template>
         <AddStore @close="close" />
       </v-dialog>
@@ -28,6 +32,14 @@
             @change="$v.store.$touch()"
             @blur="$v.store.$touch()"
           >
+          <template slot="item" slot-scope="data">
+          <v-list-tile-avatar>
+            <img :src="'https://logo.clearbit.com/' + data.item.domain" />
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+          </v-list-tile-content>
+        </template>
           </v-autocomplete>
         </v-flex>
         <v-flex sm6 pl-3 pr-3>

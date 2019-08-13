@@ -28,6 +28,14 @@
                         @change="$v.name.$touch()"
                         @blur="$v.name.$touch()"
                       >
+                    <template slot="item" slot-scope="data">
+                      <v-list-tile-avatar>
+                        <img :src="data.item.logo" />
+                      </v-list-tile-avatar>
+                      <v-list-tile-content>
+                        <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                      </v-list-tile-content>
+                    </template>
                       </v-autocomplete>
                     </v-flex>
                   </v-layout>
