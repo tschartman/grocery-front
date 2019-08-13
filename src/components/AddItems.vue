@@ -5,23 +5,23 @@
       <v-layout row wrap pl-5 pr-5>
         <v-flex sm6 pr-3 pl-3>
           <v-text-field
-          v-model="brand"
-          :error-messages="brandErrors"
-          label="Brand"
-          required
-          @input="$v.brand.$touch()"
-          @blur="$v.brand.$touch()"
+            v-model="brand"
+            :error-messages="brandErrors"
+            label="Brand"
+            required
+            @input="$v.brand.$touch()"
+            @blur="$v.brand.$touch()"
           >
           </v-text-field>
         </v-flex>
         <v-flex sm6 pr-3 pl-3>
           <v-text-field
-          v-model="name"
-          :error-messages="nameErrors"
-          label="Name"
-          required
-          @input="$v.name.$touch()"
-          @blur="$v.name.$touch()"
+            v-model="name"
+            :error-messages="nameErrors"
+            label="Name"
+            required
+            @input="$v.name.$touch()"
+            @blur="$v.name.$touch()"
           >
           </v-text-field>
         </v-flex>
@@ -39,27 +39,27 @@
         </v-flex>
         <v-flex sm4 pr-3 pl-3>
           <v-text-field
-          v-model="price"
-          :error-messages="priceErrors"
-          prefix="$"
-          label="Price"
-          type="number"
-          required
-          @input="$v.price.$touch()"
-          @blur="$v.price.$touch()"
+            v-model="price"
+            :error-messages="priceErrors"
+            prefix="$"
+            label="Price"
+            type="number"
+            required
+            @input="$v.price.$touch()"
+            @blur="$v.price.$touch()"
           >
           </v-text-field>
         </v-flex>
         <v-flex sm4 pr-3 pl-3>
           <v-text-field
-          v-model="weight"
-          :error-messages="weightErrors"
-          suffix="Oz"
-          label="Weight"
-          type="number"
-          required
-          @input="$v.weight.$touch()"
-          @blur="$v.weight.$touch()"
+            v-model="weight"
+            :error-messages="weightErrors"
+            suffix="Oz"
+            label="Weight"
+            type="number"
+            required
+            @input="$v.weight.$touch()"
+            @blur="$v.weight.$touch()"
           >
           </v-text-field>
         </v-flex>
@@ -154,7 +154,7 @@ export default {
     name: { required },
     quantity: { required },
     price: { required },
-    weight: { required },
+    weight: { required }
   },
 
   data() {
@@ -203,11 +203,11 @@ export default {
       if (!this.$v.weight.$dirty) return errors;
       !this.$v.weight.required && errors.push("Weight is required.");
       return errors;
-    },
+    }
   },
   methods: {
     addItem() {
-    this.$v.$touch();
+      this.$v.$touch();
       if (!this.$v.$invalid) {
         let newItem = {
           name: this.name,

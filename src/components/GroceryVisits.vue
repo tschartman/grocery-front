@@ -38,7 +38,9 @@
                 </v-list-tile-action>
 
                 <v-list-tile-avatar>
-                  <img :src="'https://logo.clearbit.com/' + visit.store.domain" />
+                  <img
+                    :src="'https://logo.clearbit.com/' + visit.store.domain"
+                  />
                 </v-list-tile-avatar>
 
                 <v-list-tile-content>

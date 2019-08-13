@@ -6,11 +6,11 @@
           <v-card class="elevation-12">
             <v-toolbar color="primary" dark flat>
               <v-toolbar-title>Register</v-toolbar-title>
-              <v-spacer></v-spacer> 
+              <v-spacer></v-spacer>
             </v-toolbar>
             <v-card-text>
               <form>
-              <h3>User Info</h3>
+                <h3>User Info</h3>
                 <v-text-field
                   @keyup.enter="submit"
                   v-model="firstName"
@@ -96,7 +96,7 @@ export default {
       minLength: minLength(8)
     },
     repeatPassword: {
-      sameAsPassword: sameAs('password')
+      sameAsPassword: sameAs("password")
     },
     checkbox: {
       checked(val) {
@@ -151,7 +151,8 @@ export default {
     repeatPasswordErrors() {
       const errors = [];
       if (!this.$v.repeatPassword.$dirty) return errors;
-      !this.$v.repeatPassword.sameAsPassword && errors.push("Passwords must match");
+      !this.$v.repeatPassword.sameAsPassword &&
+        errors.push("Passwords must match");
       return errors;
     }
   },
@@ -168,7 +169,7 @@ export default {
         this.$http
           .post("http://localhost:8000/users/", data)
           .then(res => {
-            this.$router.push("/login");    
+            this.$router.push("/login");
           })
           .catch(err => {
             console.log(err);

@@ -3,21 +3,14 @@
     <div>
       <h1>Visit</h1>
 
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <template v-slot:activator="{ on }">
-        <v-btn
-          color="red lighten-2"
-          dark
-          v-on="on"
-        >
-          Add Store
-        </v-btn>
-      </template>
-    <AddStore @close="close" />
-    </v-dialog>
+      <v-dialog v-model="dialog" width="500">
+        <template v-slot:activator="{ on }">
+          <v-btn color="red lighten-2" dark v-on="on">
+            Add Store
+          </v-btn>
+        </template>
+        <AddStore @close="close" />
+      </v-dialog>
       <v-layout row wrap pl-5 pr-5>
         <v-flex sm6 pl-3 pr-3>
           <v-autocomplete
@@ -151,7 +144,7 @@ export default {
     store: { required },
     amount: { required },
     date: { required },
-    time: { required },
+    time: { required }
   },
 
   name: "AddVisit",
@@ -170,7 +163,7 @@ export default {
     time: null,
     menu1: false,
     menu2: false,
-    dialog: false,
+    dialog: false
   }),
 
   computed: {
@@ -184,13 +177,13 @@ export default {
         };
       });
     },
-        items() {
+    items() {
       return this.stores.map(store => {
         const Name = store.name;
         return Object.assign({}, store, { Name });
       });
     },
-      storeErrors() {
+    storeErrors() {
       const errors = [];
       if (!this.$v.store.$dirty) return errors;
       !this.$v.store.required && errors.push("Store is required.");
@@ -213,7 +206,7 @@ export default {
       if (!this.$v.time.$dirty) return errors;
       !this.$v.time.required && errors.push("Time is required.");
       return errors;
-    },
+    }
   },
 
   watch: {
@@ -250,39 +243,39 @@ export default {
       this.visitItems.push(item);
     },
 
-    close(){
-      this.dialog = false
+    close() {
+      this.dialog = false;
     },
     submit() {
-    this.$v.$touch();
+      this.$v.$touch();
       if (!this.$v.$invalid) {
-      this.$http
-        .post("http://localhost:8000/visits/", {
-          date: this.date + "T" + this.time,
-          store: this.store,
-          total: this.amount
-        })
-        .then(result => {
-          this.visitItems
-            .forEach(item => {
-              this.$http
-                .post("http://localhost:8000/items/", {
-                  brand: item.brand,
-                  name: item.name,
-                  price: item.price,
-                  quantity: item.quantity,
-                  weight: item.weight,
-                  visit: result.data.url
-                })
-                .catch(error => {
-                  console.log(error.response);
-                });
-            })
-            .then(this.$router.push("/"));
-        })
-        .catch(error => {
-          console.log(error.response);
-        });
+        this.$http
+          .post("http://localhost:8000/visits/", {
+            date: this.date + "T" + this.time,
+            store: this.store,
+            total: this.amount
+          })
+          .then(result => {
+            this.visitItems
+              .forEach(item => {
+                this.$http
+                  .post("http://localhost:8000/items/", {
+                    brand: item.brand,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    weight: item.weight,
+                    visit: result.data.url
+                  })
+                  .catch(error => {
+                    console.log(error.response);
+                  });
+              })
+              .then(this.$router.push("/"));
+          })
+          .catch(error => {
+            console.log(error.response);
+          });
       }
     }
   }

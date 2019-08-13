@@ -1,72 +1,72 @@
 <template>
-<v-content>
-      <v-container fluid fill-height>
-        <v-layout align-center justify-center>
-          <v-flex xs12 sm12 md12>
-            <v-card class="elevation-12">
-              <v-toolbar color="primary" dark flat>
-                <v-toolbar-title>Store</v-toolbar-title>
-                <v-spacer></v-spacer>
-              </v-toolbar>
-              <v-card-text>
-                <v-form ref="form" lazy-validation>
-                  <div>
-                    <v-layout>
-                      <v-flex sm12>
-                        <v-autocomplete
-                          v-model="model"
-                          :items="items"
-                          :loading="isLoading"
-                          :search-input.sync="search"
-                          :error-messages="nameErrors"
-                          hide-no-data
-                          hide-selected
-                          item-text="Name"
-                          label="Stores"
-                          placeholder="Start typing to Search"
-                          return-object
-                          @change="$v.name.$touch()"
-                          @blur="$v.name.$touch()"
-                        >
-                        </v-autocomplete>
-                      </v-flex>
-                    </v-layout>
-                    <v-layout>
-                      <v-flex sm12>
-                        <v-text-field
+  <v-content>
+    <v-container fluid fill-height>
+      <v-layout align-center justify-center>
+        <v-flex xs12 sm12 md12>
+          <v-card class="elevation-12">
+            <v-toolbar color="primary" dark flat>
+              <v-toolbar-title>Store</v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-card-text>
+              <v-form ref="form" lazy-validation>
+                <div>
+                  <v-layout>
+                    <v-flex sm12>
+                      <v-autocomplete
+                        v-model="model"
+                        :items="items"
+                        :loading="isLoading"
+                        :search-input.sync="search"
+                        :error-messages="nameErrors"
+                        hide-no-data
+                        hide-selected
+                        item-text="Name"
+                        label="Stores"
+                        placeholder="Start typing to Search"
+                        return-object
+                        @change="$v.name.$touch()"
+                        @blur="$v.name.$touch()"
+                      >
+                      </v-autocomplete>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout>
+                    <v-flex sm12>
+                      <v-text-field
                         label="Address Line 1"
                         v-model="address"
                         :error-messages="addressErrors"
                         @input="$v.address.$touch()"
                         @blur="$v.address.$touch()"
-                        >
-                        </v-text-field>
-                      </v-flex>
-                    </v-layout>
-                    <v-layout>
-                      <v-flex pr-3 sm6>
-                        <v-text-field
+                      >
+                      </v-text-field>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout>
+                    <v-flex pr-3 sm6>
+                      <v-text-field
                         label="City"
                         v-model="city"
                         :error-messages="cityErrors"
                         @input="$v.city.$touch()"
                         @blur="$v.city.$touch()"
-                        >
-                        </v-text-field>
-                      </v-flex>
-                      <v-flex sm2>
-                        <v-select
-                          :items="states"
-                          filled
-                          label="State"
-                          :error-messages="stateErrors"
-                          v-model="state"
-                          @change="$v.state.$touch()"
-                          @blur="$v.state.$touch()"
-                        ></v-select>
-                      </v-flex>
-                      <v-flex pl-3 sm4>
-                        <v-text-field
+                      >
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex sm2>
+                      <v-select
+                        :items="states"
+                        filled
+                        label="State"
+                        :error-messages="stateErrors"
+                        v-model="state"
+                        @change="$v.state.$touch()"
+                        @blur="$v.state.$touch()"
+                      ></v-select>
+                    </v-flex>
+                    <v-flex pl-3 sm4>
+                      <v-text-field
                         label="Zip"
                         type="number"
                         :counter="5"
@@ -75,21 +75,21 @@
                         @input="$v.zip.$touch()"
                         @blur="$v.zip.$touch()"
                       ></v-text-field>
-                      </v-flex>
-                    </v-layout>
-                  </div>
-                </v-form>
-             </v-card-text>
-              <v-card-actions>
-                <v-btn color="error" @click="cancel">Cancel</v-btn>
-                <v-spacer></v-spacer>
-                <v-btn color="success" @click="submit">submit</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-content>
+                    </v-flex>
+                  </v-layout>
+                </div>
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="error" @click="cancel">Cancel</v-btn>
+              <v-spacer></v-spacer>
+              <v-btn color="success" @click="submit">submit</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </v-content>
 </template>
 <script>
 import { validationMixin } from "vuelidate";
@@ -103,7 +103,7 @@ export default {
     address: { required },
     city: { required },
     state: { required },
-    zip: { required, maxLength: maxLength(5), minLength: minLength(5) },
+    zip: { required, maxLength: maxLength(5), minLength: minLength(5) }
   },
 
   name: "AddStore",
@@ -222,10 +222,11 @@ export default {
     zipErrors() {
       const errors = [];
       if (!this.$v.zip.$dirty) return errors;
-      (!this.$v.zip.maxLength || !this.$v.zip.minLength) && errors.push("Zip must be 5 numbers") 
+      (!this.$v.zip.maxLength || !this.$v.zip.minLength) &&
+        errors.push("Zip must be 5 numbers");
       !this.$v.zip.required && errors.push("Zip Code is required.");
       return errors;
-    },
+    }
   },
 
   watch: {
@@ -258,7 +259,7 @@ export default {
   methods: {
     submit() {
       this.$v.$touch();
-        if (!this.$v.$invalid) {
+      if (!this.$v.$invalid) {
         let store = {
           name: this.name,
           domain: this.domain,
@@ -273,10 +274,10 @@ export default {
             this.$emit("close", false);
           })
           .catch(error => {});
-        }
+      }
     },
     cancel() {
-        this.$emit("close");
+      this.$emit("close");
     }
   }
 };
