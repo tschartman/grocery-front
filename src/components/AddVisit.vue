@@ -2,7 +2,22 @@
   <v-form ref="form" lazy-validation>
     <div>
       <h1>Visit</h1>
-      <v-btn to="/addStore"><a>Add Store</a></v-btn>
+
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <template v-slot:activator="{ on }">
+        <v-btn
+          color="red lighten-2"
+          dark
+          v-on="on"
+        >
+          Add Store
+        </v-btn>
+      </template>
+    <AddStore @close="close" />
+    </v-dialog>
       <v-layout row wrap pl-5 pr-5>
         <v-flex sm6 pl-3 pr-3>
           <v-autocomplete
@@ -10,21 +25,28 @@
             :items="items"
             :loading="isLoading"
             :search-input.sync="search"
+            :error-messages="storeErrors"
             hide-no-data
             hide-selected
             item-text="Name"
             label="Stores"
             placeholder="Start typing to Search"
             return-object
+            @change="$v.store.$touch()"
+            @blur="$v.store.$touch()"
           >
           </v-autocomplete>
         </v-flex>
         <v-flex sm6 pl-3 pr-3>
           <v-text-field
             label="Amount"
+            type="number"
             v-model="amount"
-            value="10.00"
+            :error-messages="amountErrors"
             prefix="$"
+            required
+            @input="$v.amount.$touch()"
+            @blur="$v.amount.$touch()"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -44,11 +66,13 @@
             <template v-slot:activator="{ on }">
               <v-text-field
                 v-model="date"
+                :error-messages="dateErrors"
                 label="Date"
-                hint="YYYY-MM-DD format"
-                persistent-hint
                 prepend-icon="event"
                 readonly
+                required
+                @input="$v.date.$touch()"
+                @blur="$v.date.$touch()"
                 v-on="on"
               ></v-text-field>
             </template>
@@ -74,9 +98,13 @@
             <template v-slot:activator="{ on }">
               <v-text-field
                 v-model="time"
+                :error-messages="timeErrors"
                 label="Time"
                 prepend-icon="event"
                 readonly
+                required
+                @input="$v.time.$touch()"
+                @blur="$v.time.$touch()"
                 v-on="on"
               ></v-text-field>
             </template>
@@ -108,11 +136,24 @@
 </template>
 <script>
 import Vue from "vue";
+import { validationMixin } from "vuelidate";
+import { required, sameAs, minLength, email } from "vuelidate/lib/validators";
 import AddItems from "./AddItems.vue";
+import AddStore from "./AddStore.vue";
 
 Vue.component("AddItems", AddItems);
+Vue.component("AddStore", AddStore);
 
 export default {
+  mixins: [validationMixin],
+
+  validations: {
+    store: { required },
+    amount: { required },
+    date: { required },
+    time: { required },
+  },
+
   name: "AddVisit",
   components: {
     AddItems
@@ -125,10 +166,11 @@ export default {
     search: null,
     store: "",
     amount: "",
-    date: new Date().toISOString().substr(0, 10),
+    date: null,
     time: null,
     menu1: false,
-    menu2: false
+    menu2: false,
+    dialog: false,
   }),
 
   computed: {
@@ -142,12 +184,36 @@ export default {
         };
       });
     },
-    items() {
+        items() {
       return this.stores.map(store => {
         const Name = store.name;
         return Object.assign({}, store, { Name });
       });
-    }
+    },
+      storeErrors() {
+      const errors = [];
+      if (!this.$v.store.$dirty) return errors;
+      !this.$v.store.required && errors.push("Store is required.");
+      return errors;
+    },
+    amountErrors() {
+      const errors = [];
+      if (!this.$v.amount.$dirty) return errors;
+      !this.$v.amount.required && errors.push("An amount is required.");
+      return errors;
+    },
+    dateErrors() {
+      const errors = [];
+      if (!this.$v.date.$dirty) return errors;
+      !this.$v.date.required && errors.push("Date is required.");
+      return errors;
+    },
+    timeErrors() {
+      const errors = [];
+      if (!this.$v.time.$dirty) return errors;
+      !this.$v.time.required && errors.push("Time is required.");
+      return errors;
+    },
   },
 
   watch: {
@@ -184,7 +250,12 @@ export default {
       this.visitItems.push(item);
     },
 
+    close(){
+      this.dialog = false
+    },
     submit() {
+    this.$v.$touch();
+      if (!this.$v.$invalid) {
       this.$http
         .post("http://localhost:8000/visits/", {
           date: this.date + "T" + this.time,
@@ -212,6 +283,7 @@ export default {
         .catch(error => {
           console.log(error.response);
         });
+      }
     }
   }
 };
