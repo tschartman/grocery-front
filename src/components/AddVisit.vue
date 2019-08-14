@@ -124,7 +124,11 @@
     </div>
     <br />
     <br />
-    <AddItems @addItem="addItem" />
+    <AddItems 
+    @addItem="addItem"
+    @editItem="editItem"
+    @deleteItem="deleteItem"
+     />
     <v-layout row wrap pl-5 pr-5>
       <v-flex sm6 pl-3 pr-3>
         <v-btn color="error" @click="cancel">
@@ -255,7 +259,13 @@ export default {
     addItem(item) {
       this.visitItems.push(item);
     },
-
+    deleteItem(index){
+      this.visitItems.splice(index, 1)
+    },
+    editItem(newItem, index){
+      let updatedItem = {...this.items[index], ...newItem}
+      this.visitItems.splice(index, 1, updatedItem)
+    },
     close() {
       this.dialog = false;
     },

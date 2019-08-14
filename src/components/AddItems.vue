@@ -248,10 +248,12 @@ export default {
     },
     deleteItem(index){
       this.items.splice(index, 1)
+      this.$emit("deleteItem", index);
     },
     edit(newItem, index){
       let updatedItem = {...this.items[index], ...newItem}
       this.items.splice(index, 1, updatedItem)
+      this.$emit("editItem", newItem, index);
       this.dialog2 = false;
     },
     close() {
