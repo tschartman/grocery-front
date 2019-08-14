@@ -30,6 +30,7 @@
         <v-flex sm4 pr-3 pl-3>
           <v-text-field
             v-model="quantity"
+            type="number"
             :error-messages="quantityErrors"
             label="Quantity"
             required
@@ -73,6 +74,7 @@
         :pagination.sync="pagination"
         content-tag="v-layout"
         :expand="true"
+        no-data-text="">
         wrap
       >
         <template v-slot:item="props">
@@ -89,6 +91,20 @@
                     }}</span>
                   </v-flex>
                   <v-flex xs2>
+                      <v-dialog v-model="dialog2" width="500">
+                      <template v-slot:activator="{ on }">
+                        <v-icon
+                         v-on="on"
+                        class="pl-4 icon"
+                        >edit</v-icon>
+                      </template>
+                      <EditItem @close="close" @edit="edit" :item="props.item" :index="props.index" />
+                    </v-dialog>
+                    <v-icon
+                    @click="deleteItem(props.index)"
+                    class="pl-4 icon"
+                    >delete
+                    </v-icon>
                     <v-checkbox
                       v-model="props.expanded"
                       class="pl-4"
@@ -143,12 +159,18 @@
   </div>
 </template>
 <script>
+import Vue from "vue";
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
+import EditItem from './EditItem.vue';
+
+Vue.component("EditItem", EditItem);
 
 export default {
-  mixins: [validationMixin],
 
+
+  mixins: [validationMixin],
+  name: "AddItems",
   validations: {
     brand: { required },
     name: { required },
@@ -167,6 +189,8 @@ export default {
       weight: null,
       items: [],
       expanded: false,
+      dialog2: false,
+      filteredItems: [],
       rowsPerPageItems: [4, 8, 12],
       pagination: {
         rowsPerPage: 4
@@ -218,11 +242,27 @@ export default {
         };
         this.items.push(newItem);
         this.$emit("addItem", newItem);
+        this.$nextTick(() => { this.$v.$reset() })
         this.$refs.form.reset();
       }
-    }
+    },
+    deleteItem(index){
+      this.items.splice(index, 1)
+    },
+    edit(newItem, index){
+      let updatedItem = {...this.items[index], ...newItem}
+      this.items.splice(index, 1, updatedItem)
+      this.dialog2 = false;
+    },
+    close() {
+      this.dialog2 = false;
+    },
   }
 };
 </script>
 
-<style></style>
+<style>
+.icon{
+  padding-right: 7px;
+}
+</style>

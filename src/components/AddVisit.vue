@@ -149,6 +149,7 @@ import AddStore from "./AddStore.vue";
 Vue.component("AddItems", AddItems);
 Vue.component("AddStore", AddStore);
 
+
 export default {
   mixins: [validationMixin],
 
@@ -283,7 +284,7 @@ export default {
                     console.log(error.response);
                   });
               })
-              .then(this.$router.push("/"));
+              this.$router.push("/");
           })
           .catch(error => {
             console.log(error.response);
