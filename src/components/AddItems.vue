@@ -65,6 +65,11 @@
           </v-text-field>
         </v-flex>
       </v-layout>
+      <v-btn color="blue-grey" class="black--text" @click.native="openFileDialog">
+        Upload
+        <v-icon right dark> cloud_upload</v-icon>
+      </v-btn>
+      <input type="file" id="file-upload" style="display:none" @change="onFileChange">
       <v-btn color="success" @click="addItem">Add Item</v-btn>
     </v-form>
     <v-container fluid grid-list-md>
@@ -86,6 +91,11 @@
                     <h4>{{ props.item.brand }} {{ props.item.name }}</h4>
                   </v-flex>
                   <v-flex xs4>
+                         <v-img
+                          v-if="props.item.image"
+                          :src="props.item.image"
+                        >
+                         </v-img>
                     <span class="pl-3">{{
                       props.item.price | toCurrency
                     }}</span>
@@ -190,7 +200,7 @@ export default {
       items: [],
       expanded: false,
       dialog2: false,
-      filteredItems: [],
+      formData: new FormData(),
       rowsPerPageItems: [4, 8, 12],
       pagination: {
         rowsPerPage: 4
@@ -246,6 +256,29 @@ export default {
         this.$refs.form.reset();
       }
     },
+        openFileDialog() {
+            document.getElementById('file-upload').click();
+        },
+        onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files;       
+            if(files.length > 0){
+                for(var i = 0; i< files.length; i++){
+                    this.formData.append("file", files[i], files[i].name);
+                }
+            }   
+          this.uploadFile()            
+        },
+        uploadFile() {
+          console.log("here");
+            this.$http
+            .post('http://localhost:8000/api/parser/', this.formData)
+            .then(response => {
+                this.items = response.data.items
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
     deleteItem(index){
       this.items.splice(index, 1)
       this.$emit("deleteItem", index);
